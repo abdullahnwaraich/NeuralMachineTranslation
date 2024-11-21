@@ -1,10 +1,11 @@
 # NeuralMachineTranslation
-Goal: Sentence translation from Cherokee to English  
-Assignment 4 of CS 224N of Stanford/ Winter 2021(all the supporting files can be downloaded from https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1214/) 
 
-## ***Mathematical Description (Training procedure)***
+## Goal:
+Sentence translation from Cherokee to English.
 
-The model uses a *bidirectional LSTM* for source language sentence encoding. Let \( x_{1}, \ldots, x_{m} \) be the embeddings of the source sentence with each \( x_{i} \in \mathbb{R}^{e \times 1} \) for \( i \in [m] \). The last hidden/cell state of the forward directional encoder and the first hidden/cell state of the backward directional encoder are concatenated and projected via linear transforms \( W_{h}, W_{c} \in \mathbb{R}^{h \times 2h} \):
+## Mathematical Description (Training procedure)
+
+The model uses a *bidirectional LSTM* for source language sentence encoding. Let \( x_{1}, \ldots, x_{m} \) be the embeddings of the source sentence, with each \( x_{i} \in \mathbb{R}^{e \times 1} \) for \( i \in [m] \). The last hidden/cell state of the forward directional encoder and the first hidden/cell state of the backward directional encoder are concatenated and projected via linear transforms \( W_{h}, W_{c} \in \mathbb{R}^{h \times 2h} \):
 \[
 h_{0}^{\textit{dec}} = W_{h}[\overleftarrow{h_{1}^{\textit{enc}}}; \overrightarrow{h_{m}^{\textit{enc}}}], \quad
 c_{0}^{\textit{dec}} = W_{c}[\overleftarrow{c_{1}^{\textit{enc}}}; \overrightarrow{c_{m}^{\textit{enc}}}]
@@ -35,7 +36,7 @@ Next, we concatenate the attention output and the hidden state of the decoder to
 v_{t} = W_{u} u_{t}, \quad o_{t} := \textit{dropout} \big(\tanh(v_{t}) \big)
 \]
 
-If \( V_{\textit{tgt}} \) is the vocab size of the target language, we use the *target vocab projection matrix* \( W_{\textit{vocab}} \in \mathbb{R}^{V_{\textit{tgt}} \times h} \) to compute the output probabilities:
+If \( V_{\textit{tgt}} \) is the vocabulary size of the target language, we use the *target vocab projection matrix* \( W_{\textit{vocab}} \in \mathbb{R}^{V_{\textit{tgt}} \times h} \) to compute the output probabilities:
 \[
 P_{t} = \textit{softmax}(W_{\textit{vocab}} o_{t}) \in \mathbb{R}^{V_{\textit{tgt}} \times 1}
 \]
@@ -51,4 +52,3 @@ J_{t}(\theta) := \textit{CrossEntropy}(P_{t}, g_{t})
 \]
 
 Here, \( \theta \) represents all the trainable parameters of the architecture.
-
